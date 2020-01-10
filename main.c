@@ -13,6 +13,16 @@
 #define DATE_BUFFER_SIZE 30
 #define INT_CONVERSION_BUFFER_SIZE 30
 
+// emojis
+#define EMOJI_CHARGE "⚡"
+
+enum battery_charge_status {
+	BATTERY_UNDETERMINED,
+	BATTERY_CHARGE,
+	BATTERY_DISCHARGE,
+	BATTERY_UNKNOWN,
+};
+
 long getIntFromFile(char *fname) {
 	FILE *file;
 	file = fopen(fname, "r");
@@ -78,8 +88,27 @@ void printBatteryStatus() {
 		return;
 	}
 	int ch;
+	int status = BATTERY_UNDETERMINED;
 	while (ch = fgetc(batstat_f), ch != EOF && ch != '\n') {
 		printf("%c", ch);
+		if (status == BATTERY_UNDETERMINED) {
+			switch (ch) {
+				case 'C':
+					status = BATTERY_CHARGE;
+					break;
+
+				case 'D':
+					status = BATTERY_DISCHARGE;
+					break;
+
+				default:
+					status = BATTERY_UNKNOWN;
+					break;
+			}
+		}
+	}
+	if (status == BATTERY_CHARGE) {
+		printf(" %s", EMOJI_CHARGE);
 	}
 	fclose(batstat_f);
 }
