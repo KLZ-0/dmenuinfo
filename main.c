@@ -6,21 +6,12 @@
 #include <limits.h>
 #include <string.h>
 
-#define VERSION "1.0.0"
+#define VERSION "1.0.1"
 
 #define KERNEL_ENDCHAR '-'
 #define FLOATING_POINT_CHAR '.'
 #define DATE_BUFFER_SIZE 30
-
-int findCharPositionInStream(FILE *stream, char ch) {
-	int pos = 0;
-	int tmp;
-	while (tmp = fgetc(stream), tmp != EOF && tmp != ch && tmp != '\n') {
-		pos++;
-	}
-	rewind(stream);
-	return pos;
-}
+#define INT_CONVERSION_BUFFER_SIZE 30
 
 long getIntFromFile(char *fname) {
 	FILE *file;
@@ -28,26 +19,25 @@ long getIntFromFile(char *fname) {
 	if (file == NULL) {
 		return 0;
 	}
-	int len = findCharPositionInStream(file, FLOATING_POINT_CHAR)+1;
-	char *tmp = calloc(len, sizeof(char));
-	if (tmp == NULL) {
-		fclose(file);
-		return 0;
-	}
-	if(fgets(tmp, len, file) == NULL) {
-		free(tmp);
-		fclose(file);
-		return 0;
+
+	// copy chars from a file to buffer until FLOATING_POINT_CHAR or newline is met
+	char buffer[INT_CONVERSION_BUFFER_SIZE] = {0};
+	int tmp;
+	for (int i = 0; i < INT_CONVERSION_BUFFER_SIZE; i++) {
+		tmp = fgetc(file);
+		if (tmp == EOF || tmp == FLOATING_POINT_CHAR || tmp == '\n') {
+			break;
+		}
+		buffer[i] = (char)tmp;
 	}
 	fclose(file);
 
+	// convert to long
 	char *endptr = NULL;
-	long num = strtol(tmp, &endptr, 0);
-	if (*endptr || num == LONG_MAX || num == LONG_MIN) {
-		free(tmp);
+	long num = strtol(buffer, &endptr, 0);
+	if (num == LONG_MAX || num == LONG_MIN) {
 		return 0;
 	}
-	free(tmp);
 	return num;
 }
 
