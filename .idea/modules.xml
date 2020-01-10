@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/dmenuinfo.iml" filepath="$PROJECT_DIR$/.idea/dmenuinfo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/systatus.iml" filepath="$PROJECT_DIR$/.idea/systatus.iml" />
     </modules>
   </component>
 </project>
