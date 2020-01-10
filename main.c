@@ -4,6 +4,9 @@
 #include <sys/utsname.h>
 #include <time.h>
 #include <limits.h>
+#include <string.h>
+
+#define VERSION "1.0.0"
 
 #define KERNEL_ENDCHAR '-'
 #define FLOATING_POINT_CHAR '.'
@@ -103,7 +106,11 @@ void printDateFormatted() {
 	printf("%s", buffer);
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+	if (argc > 1 && strstr(argv[1], "-v") == argv[1]) {
+		printf("%s\n", VERSION);
+		return 0;
+	}
 	printf("Uptime: ");
 	printUptime();
 	printf(" | ");
