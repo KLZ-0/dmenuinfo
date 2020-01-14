@@ -6,7 +6,7 @@
 #include <limits.h>
 #include <string.h>
 
-#define VERSION "1.0.1"
+#define VERSION "1.0.2"
 
 #define KERNEL_ENDCHAR '-'
 #define FLOATING_POINT_CHAR '.'
@@ -125,16 +125,14 @@ void printDateFormatted() {
 	printf("%s", buffer);
 }
 
-int main(int argc, char *argv[]) {
-	if (argc > 1 && strstr(argv[1], "-v") == argv[1]) {
-		printf("%s\n", VERSION);
-		return 0;
-	}
+void printAll() {
 	printf("Uptime: ");
 	printUptime();
 	printf(" | ");
 	printf("kernel ");
 	printKernelVersion();
+	printf(" | ");
+	printNetworkName();
 	printf(" | ");
 	printBatteryPercentage();
 	printf(" ");
@@ -142,5 +140,13 @@ int main(int argc, char *argv[]) {
 	printf(" | ");
 	printDateFormatted();
 	printf("\n");
+}
+
+int main(int argc, char *argv[]) {
+	if (argc > 1 && strstr(argv[1], "-v") == argv[1]) {
+		printf("%s\n", VERSION);
+		return 0;
+	}
+	printAll();
 	return 0;
 }
