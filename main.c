@@ -132,8 +132,6 @@ void printAll() {
 	printf("kernel ");
 	printKernelVersion();
 	printf(" | ");
-	printNetworkName();
-	printf(" | ");
 	printBatteryPercentage();
 	printf(" ");
 	printBatteryStatus();
