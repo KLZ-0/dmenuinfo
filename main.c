@@ -6,7 +6,7 @@
 #include <limits.h>
 #include <string.h>
 
-#define VERSION "1.0.2"
+#define VERSION "1.0.3"
 
 #define KERNEL_ENDCHAR '-'
 #define FLOATING_POINT_CHAR '.'
@@ -144,13 +144,23 @@ void printAll() {
 	printf(" | ");
 	printDateFormatted();
 	printf("\n");
+	fflush(stdout);
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wmissing-noreturn"
 int main(int argc, char *argv[]) {
 	if (argc > 1 && strstr(argv[1], "-v") == argv[1]) {
 		printf("%s\n", VERSION);
 		return 0;
 	}
+	struct timespec timestamp;
 	printAll();
+
+	clock_gettime(CLOCK_MONOTONIC_RAW, &timestamp);
+	timestamp.tv_sec = 0;
+	timestamp.tv_nsec = 1e9-timestamp.tv_nsec;
+	nanosleep(&timestamp, NULL);
 	return 0;
 }
+#pragma clang diagnostic pop
