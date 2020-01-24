@@ -6,7 +6,7 @@
 #include <limits.h>
 #include <string.h>
 
-#define VERSION "1.1.0"
+#define VERSION "1.1.1"
 
 // compile time options
 // comment line to disable network name parsing
@@ -103,6 +103,8 @@ void printNetworkName() {
 					namePos++;
 				}
 				break;
+			default:
+				printf(", ");
 			case 1:
 				for (int u = 0; path[u] != '\0' && u < namePos; ++u) {
 					if((path[u] == ' ' && path[u+1] == ' ') || u+1 == namePos) {
@@ -110,8 +112,6 @@ void printNetworkName() {
 					}
 					printf("%c", path[u]);
 				}
-				break;
-			default:
 				break;
 		}
 		linecount++;
