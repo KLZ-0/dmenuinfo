@@ -199,8 +199,6 @@ void printAll() {
 	fflush(stdout);
 }
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wmissing-noreturn"
 int main(int argc, char *argv[]) {
 	if (argc > 1 && strstr(argv[1], "-v") == argv[1]) {
 		printf("%s\n", VERSION);
@@ -215,4 +213,3 @@ int main(int argc, char *argv[]) {
 	nanosleep(&timestamp, NULL);
 	return 0;
 }
-#pragma clang diagnostic pop
