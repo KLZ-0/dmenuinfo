@@ -6,12 +6,18 @@
 #include <limits.h>
 #include <string.h>
 
-#define VERSION "1.0.3"
+#define VERSION "1.1.0"
 
+// compile time options
+// comment line to disable network name parsing
+#define PRINT_NETWORKNAME
+
+// misc
 #define KERNEL_ENDCHAR '-'
 #define FLOATING_POINT_CHAR '.'
 #define DATE_BUFFER_SIZE 30
 #define INT_CONVERSION_BUFFER_SIZE 30
+#define NMCLI_COMMAND "nmcli connection show --active"
 
 // emojis
 #define EMOJI_CHARGE "⚡"
@@ -73,6 +79,48 @@ void printKernelVersion() {
 	for (char *c = buf.release; *c != KERNEL_ENDCHAR && *c; c++) {
 		printf("%c", *c);
 	}
+}
+
+void printNetworkName() {
+	FILE *fp;
+
+	fp = popen(NMCLI_COMMAND, "r");
+	if (fp == NULL) {
+		fprintf(stderr, "Failed to run nmcli\n" );
+		return;
+	}
+
+	printf("Network: ");
+
+	char path[300];
+	//remove header
+	unsigned namePos = 0;
+	int linecount = 0;
+	while (fgets(path, sizeof(path), fp) != NULL) {
+		switch (linecount) {
+			case 0:
+				while (path[namePos] != '\0' && path[namePos] != 'U') {
+					namePos++;
+				}
+				break;
+			case 1:
+				for (int u = 0; path[u] != '\0' && u < namePos; ++u) {
+					if((path[u] == ' ' && path[u+1] == ' ') || u+1 == namePos) {
+						break;
+					}
+					printf("%c", path[u]);
+				}
+				break;
+			default:
+				break;
+		}
+		linecount++;
+	}
+	if (linecount < 2) {
+		printf("Disconnected");
+	}
+
+	pclose(fp);
 }
 
 void printBatteryPercentage() {
@@ -138,6 +186,10 @@ void printAll() {
 	printf("kernel ");
 	printKernelVersion();
 	printf(" | ");
+	#ifdef PRINT_NETWORKNAME
+	printNetworkName();
+	printf(" | ");
+	#endif
 	printBatteryPercentage();
 	printf(" ");
 	printBatteryStatus();

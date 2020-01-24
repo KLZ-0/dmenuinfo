@@ -5,7 +5,9 @@ Outputs a formatted line to stdout which can be used as input for a status bar
 ## Example
 ![Screenshot](img/screenshot.png?raw=true "Example")
 
-## Compiling and installing
+## Compiling and installing 
+
+Note: nmcli is required as a runtime dependency, in case you don't use networkmanager you may want to comment `PRINT_NETWORKNAME` or modify `printNetworkName()`
 
 Clone the git repo:
 ```
