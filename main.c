@@ -125,6 +125,12 @@ void printDateFormatted() {
 	printf("%s", buffer);
 }
 
+void printDebugMs() {
+	struct timespec timestamp;
+	clock_gettime(CLOCK_MONOTONIC_RAW, &timestamp);
+	printf("%d", (int)(timestamp.tv_nsec/1e6));
+}
+
 void printAll() {
 	printf("Uptime: ");
 	printUptime();
