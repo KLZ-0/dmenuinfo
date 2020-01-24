@@ -26,6 +26,6 @@ The installation directory is by default `~/.local/bin` which should be included
 Modify the `status_command` in `.config/sway/config`:
 ```
 bar {
-    status_command while ~/.local/bin/systatus; do sleep 1; done
+    status_command while ~/.local/bin/systatus; do :; done
 }
 ```
