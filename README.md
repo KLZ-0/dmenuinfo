@@ -11,7 +11,7 @@ Note: nmcli is required as a runtime dependency, in case you don't use networkma
 
 Clone the git repo:
 ```
-https://github.com/KLZ-0/systatus.git
+git clone https://github.com/KLZ-0/systatus.git
 ```
 
 Run the installation script to compile and install a `Release` build: 
