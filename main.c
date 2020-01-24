@@ -8,18 +8,28 @@
 
 #define VERSION "1.1.1"
 
-// compile time options
-// comment line to disable network name parsing
+/*
+ * compile time options (comment/uncomment to toggle)
+ */
+
+// print network names from the output of NMCLI_COMMAND
 #define PRINT_NETWORKNAME
 
-// misc
+// print battery status
+#define PRINT_BATTERY
+
+/*
+ * misc
+ */
 #define KERNEL_ENDCHAR '-'
 #define FLOATING_POINT_CHAR '.'
 #define DATE_BUFFER_SIZE 30
 #define INT_CONVERSION_BUFFER_SIZE 30
 #define NMCLI_COMMAND "nmcli connection show --active"
 
-// emojis
+/*
+ * emojis
+ */
 #define EMOJI_CHARGE "⚡"
 
 enum battery_charge_status {
@@ -190,10 +200,12 @@ void printAll() {
 	printNetworkName();
 	printf(" | ");
 	#endif
+	#ifdef PRINT_BATTERY
 	printBatteryPercentage();
 	printf(" ");
 	printBatteryStatus();
 	printf(" | ");
+	#endif
 	printDateFormatted();
 	printf("\n");
 	fflush(stdout);
