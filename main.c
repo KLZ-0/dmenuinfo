@@ -6,7 +6,7 @@
 #include <limits.h>
 #include <string.h>
 
-#define VERSION "1.1.1"
+#define VERSION "1.1.2"
 
 /*
  * compile time options (comment/uncomment to toggle)
@@ -103,7 +103,6 @@ void printNetworkName() {
 	printf("Network: ");
 
 	char path[300];
-	//remove header
 	unsigned namePos = 0;
 	int linecount = 0;
 	while (fgets(path, sizeof(path), fp) != NULL) {
@@ -126,6 +125,7 @@ void printNetworkName() {
 		}
 		linecount++;
 	}
+
 	if (linecount < 2) {
 		printf("Disconnected");
 	}
@@ -216,9 +216,9 @@ int main(int argc, char *argv[]) {
 		printf("%s\n", VERSION);
 		return 0;
 	}
-	struct timespec timestamp;
 	printAll();
 
+	struct timespec timestamp;
 	clock_gettime(CLOCK_MONOTONIC_RAW, &timestamp);
 	timestamp.tv_sec = 0;
 	timestamp.tv_nsec = 1e9-timestamp.tv_nsec;
