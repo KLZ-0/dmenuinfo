@@ -6,7 +6,7 @@
 #include <limits.h>
 #include <string.h>
 
-#define VERSION "1.1.2"
+#define VERSION "1.1.3"
 
 /*
  * compile time options (comment/uncomment to toggle)
@@ -99,8 +99,6 @@ void printNetworkName() {
 		fprintf(stderr, "Failed to run nmcli\n" );
 		return;
 	}
-
-	printf("Network: ");
 
 	char path[300];
 	unsigned namePos = 0;
@@ -197,6 +195,7 @@ void printAll() {
 	printKernelVersion();
 	printf(" | ");
 	#ifdef PRINT_NETWORKNAME
+	printf("Network: ");
 	printNetworkName();
 	printf(" | ");
 	#endif
