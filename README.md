@@ -56,3 +56,11 @@ Usage: `systatus [-hvubsknd]`
 -n      connected networks
 -d      date in ctime format
 ```
+
+## Notes
+
+By default `systatus` waits for the end of the current second before exiting
+
+If an option is specified, then `systatus` exits immediately
+
+This behavior is intended, so that `systatus` with options can be used in `i3-blocks`
