@@ -29,3 +29,25 @@ bar {
     status_command while ~/.local/bin/systatus; do :; done
 }
 ```
+
+Or if `~/.local/bin` is in your `$PATH`:
+```
+bar {
+    status_command while systatus; do :; done
+}
+```
+
+## Options
+
+Usage: `systatus [-hvubsknd]`
+
+```
+-h      this help message
+-v      systatus version
+-u      uptime
+-b      battery percentage
+-s      battery status
+-k      kernel version
+-n      connected networks
+-d      date in ctime format
+```
