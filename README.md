@@ -7,16 +7,21 @@ Outputs a formatted line to stdout which can be used as input for a status bar
 
 ## Compiling and installing 
 
-Note: nmcli is required as a runtime dependency, in case you don't use networkmanager you may want to comment `PRINT_NETWORKNAME` or modify `printNetworkName()`
+Note: nmcli is required as a runtime dependency, in case you don't use networkmanager you may want to comment `PRINT_NETWORKNAME`
 
 Clone the git repo:
 ```
-git clone https://github.com/KLZ-0/systatus.git
+git clone https://github.com/KLZ-0/systatus.git && cd systatus
 ```
 
-Run the installation script to compile and install a `Release` build: 
+Compile a `Release` build: 
 ```
-./install.sh
+make
+```
+
+Install to `~/.local/bin`:
+```
+make install
 ```
 
 The installation directory is by default `~/.local/bin` which should be included in your `$PATH`
