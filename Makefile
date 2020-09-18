@@ -11,7 +11,7 @@ $(TARGET): $(BUILD_DIR)
 	cp $</$@ ./
 
 $(BUILD_DIR): $(SRC)
-	mkdir $@
+	mkdir -p $@
 	cd $@ && cmake -D CMAKE_BUILD_TYPE=Release ..
 
 install: $(TARGET)

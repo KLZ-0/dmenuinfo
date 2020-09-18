@@ -266,5 +266,12 @@ int main(int argc, char *argv[]) {
 
 	printAll();
 
+	// wait until the end of second
+	struct timespec timestamp;
+	clock_gettime(CLOCK_MONOTONIC_RAW, &timestamp);
+	timestamp.tv_sec = 0;
+	timestamp.tv_nsec = 1e9-timestamp.tv_nsec;
+	nanosleep(&timestamp, NULL);
+
 	return 0;
 }
