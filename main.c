@@ -5,8 +5,9 @@
 #include <time.h>
 #include <limits.h>
 #include <string.h>
+#include <unistd.h>
 
-#define VERSION "1.1.3"
+#define VERSION "1.2.0"
 
 /*
  * compile time options (comment/uncomment to toggle)
@@ -37,6 +38,13 @@ enum battery_charge_status {
 	BATTERY_CHARGE,
 	BATTERY_DISCHARGE,
 	BATTERY_UNKNOWN,
+};
+
+enum argument_parsing_result {
+	PARSE_SUCCESS,
+	PARSE_EXIT,
+	PARSE_EXIT_NEWLINE, // print a newline afetr after parsing an argument and exit
+	PARSE_ERROR,
 };
 
 long getIntFromFile(char *fname) {
@@ -210,17 +218,53 @@ void printAll() {
 	fflush(stdout);
 }
 
-int main(int argc, char *argv[]) {
-	if (argc > 1 && strstr(argv[1], "-v") == argv[1]) {
-		printf("%s\n", VERSION);
-		return 0;
+void printHelp(char *prog_name, FILE *stream) {
+	fprintf(stream, "Usage: %s [-hvubsknd]\n", prog_name);
+	fprintf(stream, "-h\tthis help message\n");
+	fprintf(stream, "-v\tsystatus version\n");
+	fprintf(stream, "-u\tuptime\n");
+	fprintf(stream, "-b\tbattery percentage\n");
+	fprintf(stream, "-s\tbattery status\n");
+	fprintf(stream, "-k\tkernel version\n");
+	fprintf(stream, "-n\tconnected networks\n");
+	fprintf(stream, "-d\tdate in ctime format\n");
+}
+
+int parseArgs(int argc, char *argv[]) {
+	int opt;
+
+	while ((opt = getopt(argc, argv, "hvubsknd")) != -1) {
+		switch (opt) {
+			case 'h': printHelp(argv[0], stdout); return PARSE_EXIT;
+			case 'v': printf("%s\n", VERSION); return PARSE_EXIT;
+			case 'u': printUptime(); return PARSE_EXIT_NEWLINE;
+			case 'b': printBatteryPercentage(); return PARSE_EXIT_NEWLINE;
+			case 's': printBatteryStatus(); return PARSE_EXIT_NEWLINE;
+			case 'k': printKernelVersion(); return PARSE_EXIT_NEWLINE;
+			case 'n': printNetworkName(); return PARSE_EXIT_NEWLINE;
+			case 'd': printDateFormatted(); return PARSE_EXIT_NEWLINE;
+			default:
+				printHelp(argv[0], stderr);
+				return PARSE_ERROR;
+		}
 	}
+
+	return PARSE_SUCCESS;
+}
+
+int main(int argc, char *argv[]) {
+	switch (parseArgs(argc, argv)) {
+		case PARSE_SUCCESS:
+			break;
+		case PARSE_EXIT_NEWLINE:
+			printf("\n");
+		case PARSE_EXIT:
+			return EXIT_SUCCESS;
+		default:
+			return EXIT_FAILURE;
+	}
+
 	printAll();
 
-	struct timespec timestamp;
-	clock_gettime(CLOCK_MONOTONIC_RAW, &timestamp);
-	timestamp.tv_sec = 0;
-	timestamp.tv_nsec = 1e9-timestamp.tv_nsec;
-	nanosleep(&timestamp, NULL);
 	return 0;
 }
