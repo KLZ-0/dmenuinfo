@@ -19,6 +19,10 @@
 // print battery status
 #define PRINT_BATTERY
 
+// Calculate current battery percentage instead of using the default capacity indicator
+// Use if "/sys/class/power_supply/BAT0/capacity" is not available
+//#define BATTERY_CALCULATE_CAPACITY
+
 /*
  * misc
  */
@@ -140,9 +144,13 @@ void printNetworkName() {
 }
 
 void printBatteryPercentage() {
+#ifdef BATTERY_CALCULATE_CAPACITY
 	long batnow = getIntFromFile("/sys/class/power_supply/BAT0/charge_now");
 	long batfull = getIntFromFile("/sys/class/power_supply/BAT0/charge_full");
 	printf("%d%%", (int)round((double)batnow/(double)batfull*100));
+#else
+	printf("%lu%%", getIntFromFile("/sys/class/power_supply/BAT0/capacity"));
+#endif
 }
 
 void printBatteryStatus() {
