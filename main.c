@@ -13,10 +13,13 @@
  */
 
 // print network names from the output of NMCLI_COMMAND
-#define PRINT_NETWORKNAME
+//#define PRINT_NETWORKNAME
 
 // print battery status
-#define PRINT_BATTERY
+//#define PRINT_BATTERY
+
+// loop forever
+#define LOOP_FOREVER
 
 /*
  * misc
@@ -216,12 +219,18 @@ int main(int argc, char *argv[]) {
 		printf("%s\n", VERSION);
 		return 0;
 	}
-	printAll();
+	#ifdef LOOP_FOREVER
+	for(;;) {
+	#endif
+		printAll();
 
-	struct timespec timestamp;
-	clock_gettime(CLOCK_MONOTONIC_RAW, &timestamp);
-	timestamp.tv_sec = 0;
-	timestamp.tv_nsec = 1e9-timestamp.tv_nsec;
-	nanosleep(&timestamp, NULL);
+		struct timespec timestamp;
+		clock_gettime(CLOCK_MONOTONIC_RAW, &timestamp);
+		timestamp.tv_sec = 0;
+		timestamp.tv_nsec = 1e9-timestamp.tv_nsec;
+		nanosleep(&timestamp, NULL);
+	#ifdef LOOP_FOREVER
+	}
+	#endif
 	return 0;
 }
