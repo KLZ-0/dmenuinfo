@@ -1,5 +1,4 @@
 TARGET			= systatus
-SRC				= main.c
 BUILD_DIR		= cmake-build-release
 INSTALL_DIR		= ~/.local/bin
 
@@ -7,10 +6,10 @@ INSTALL_DIR		= ~/.local/bin
 all: $(TARGET)
 
 $(TARGET): $(BUILD_DIR)
-	make -C $<
+	$(MAKE) -C $<
 	cp $</$@ ./
 
-$(BUILD_DIR): $(SRC)
+$(BUILD_DIR): CMakeLists.txt
 	mkdir -p $@
 	cd $@ && cmake -D CMAKE_BUILD_TYPE=Release ..
 
@@ -19,5 +18,5 @@ install: $(TARGET)
 	cp $< $(INSTALL_DIR)/$<
 
 clean:
-	rm -r $(BUILD_DIR)
-	rm -r $(TARGET)
+	rm -rf $(BUILD_DIR)
+	rm -rf $(TARGET)
