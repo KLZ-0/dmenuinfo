@@ -2,7 +2,7 @@ TARGET			= systatus
 BUILD_DIR		= cmake-build-release
 INSTALL_DIR		= ~/.local/bin
 
-.PHONY: all install clean
+.PHONY: all install clean $(TARGET)
 all: $(TARGET)
 
 $(TARGET): $(BUILD_DIR)
